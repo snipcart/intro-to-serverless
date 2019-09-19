@@ -1,0 +1,25 @@
+service:
+  name: my-contact-form
+app: my-contact-form
+org: snipcart
+
+plugins:
+  - serverless-webpack
+provider:
+  name: aws
+  runtime: nodejs10.x
+  environment:
+    SENDGRID_API_KEY: ${secrets:SENDGRID_API_KEY}
+    CONTACT_FORM_EMAIL_RECIPIENT: ${secrets:CONTACT_FORM_EMAIL_RECIPIENT}
+
+
+functions:
+  receiveSubmission:
+    handler: handler.receiveSubmission
+    events:
+      - http:
+          method: post
+          path: submit
+          cors:
+            origin: '*'
+            allowCredentials: false
